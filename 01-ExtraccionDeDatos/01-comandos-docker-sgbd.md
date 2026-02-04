@@ -18,7 +18,7 @@ db9a
 ## Contenedores con volumen
 ```shell
 docker run -e "ACCEPT_EULA=Y" -e "MSSQL_SA_PASSWORD=P@ssw0rd" \
--p 1439:1433 --name servidorsqlserverDev2 -v volume-sqlserverdev:/var/opt/mssql/data/ \
+-p 1439:1433 --name servidorsqlserverDev2 -v volume-sqlserverdev:/var/opt/mssql \
 -d \
 db9a
 ```
