@@ -138,7 +138,7 @@ SELECT DATEPART(YY, OrderDate) AS [Año]
 FROM Orders 
 GROUP BY DATEPART (YY, OrderDate);
 
---cuantos produtos ofrece cada provedor
+--cuantos produtos ofrece cada provedor 
 
 SELECT c.CompanyName AS [Cliente],COUNT(*) AS [Número de pedidos]
 FROM Orders AS o

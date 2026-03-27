@@ -1,4 +1,4 @@
--- Restricciones en SQL server
+  -- Restricciones en SQL server
 CREATE DATABASE restricciones;
 GO
 

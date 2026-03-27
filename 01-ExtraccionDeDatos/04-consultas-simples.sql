@@ -189,8 +189,8 @@ WHERE UnitPrice NOT BETWEEN 10 AND 20;
 
 --OPERADOR LIKE 
 --WILDCARDS (%, _, [], [^])
---Seleccionar todos los clientes en donde su nombre comience con A
 
+--Seleccionar todos los clientes en donde su nombre comience con A
 SELECT *
 FROM Customers
 WHERE CompanyName LIKE 'a%';
@@ -244,6 +244,11 @@ FROM Customers
 WHERE CompanyName LIKE '_R%';
 
 --Devolver todos los clientes que contengan a, b, c al inicio
+SELECT CustomerID, CompanyName, City
+FROM Customers
+WHERE CompanyName LIKE '[abc]%';
+
+--Devolver todos los clientes que no contengan a, b, c al inicio
 SELECT CustomerID, CompanyName, City
 FROM Customers
 WHERE CompanyName LIKE '[^abc]%';
