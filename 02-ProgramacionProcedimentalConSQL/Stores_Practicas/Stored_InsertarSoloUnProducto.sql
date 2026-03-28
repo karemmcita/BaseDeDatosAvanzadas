@@ -1,24 +1,39 @@
-/*======================= EJERCICIO =======================*/
 
-CREATE DATABASE EJERCICIO1;
-USE EJERCICIO1;
+CREATE DATABASE STORED1;
+GO
+USE STORED1;
 GO
 SELECT ProductID AS idProducto, ProductName AS nombre, UnitPrice AS precio, UnitsInStock AS existencia
 INTO producto
-FROM NORTHWND.[dbo].[Products]
+FROM NORTHWND.[dbo].[Products];
 
 GO
-SELECT * FROM cliente;
+
+ALTER TABLE producto
+ADD PRIMARY KEY (idProducto);
 
 GO
+
+SELECT CustomerID AS idCliente, ContactName AS nombre, Country AS pais, city AS ciudad
+INTO cliente
+FROM NORTHWND.[dbo].[Customers]
+GO
+
+ALTER TABLE cliente
+ADD PRIMARY KEY (idCliente);
+
+GO
+
 CREATE TABLE venta (
 
     idVenta int PRIMARY KEY IDENTITY(1,1) NOT NULL,
     fecha DATE NOT NULL,
-    cliente VARCHAR(50) NOT NULL
+    cliente NCHAR(5) NOT NULL,
+    CONSTRAINT fk_venta_cliente
+    FOREIGN KEY (cliente)
+    REFERENCES cliente (idCliente)
 );
 
-DROP TABLE venta;
 
 GO
 
@@ -41,14 +56,6 @@ CREATE table detalleVenta(
     REFERENCES producto (idProducto)
 
 );
-
-
-SELECT CustomerID AS idCliente, ContactName AS nombre, Country AS pais, city AS ciudad
-INTO cliente
-FROM NORTHWND.[dbo].[Customers]
-GO
-
-SELECT * FROM cliente;
 
 GO
 CREATE OR ALTER PROC usp_venta_registro
@@ -115,9 +122,58 @@ BEGIN
     END CATCH
 
 END; 
+GO
 
-EXEC usp_venta_registro 'Pedro Afonso', 'Tofu', 10;
+EXEC usp_venta_registro 'Pedro Afonso', 'Tofu', 101;
 
 SELECT * FROM producto;
 
-go
+
+GO
+CREATE OR ALTER TRIGGER trg_validar_cambioPrecioVenta
+ON [dbo].[detalleVenta]
+AFTER UPDATE 
+AS
+BEGIN
+    IF EXISTS (SELECT 1 
+    FROM inserted AS i
+    INNER JOIN deleted AS d
+    ON i.idVenta = d.idVenta
+    WHERE i.precioVenta <> d.precioVenta)
+    BEGIN
+        PRINT 'El precio de venta no se puede actualizar'
+        ROLLBACK TRANSACTION;
+    END;
+
+END;
+GO
+
+UPDATE detalleVenta
+SET precioVenta = 100
+WHERE idVenta = 2 AND idProducto = 2;
+
+GO
+
+CREATE OR ALTER TRIGGER trg_validar_cambioCantidad
+ON [dbo].[detalleVenta]
+AFTER UPDATE 
+AS
+BEGIN
+    IF EXISTS (SELECT 1 
+    FROM inserted AS i
+    INNER JOIN deleted AS d
+    ON i.idVenta = d.idVenta
+    WHERE i.cantidad<> d.cantidad)
+    BEGIN
+        PRINT 'El precio de venta no se puede actualizar'
+        ROLLBACK TRANSACTION;
+    END;
+
+END;
+
+UPDATE detalleVenta
+SET cantidad = 100
+WHERE idVenta = 2 AND idProducto = 2;
+
+
+
