@@ -2,6 +2,11 @@
 
 **PRACTICA NÚMERO 1 - INSERTAR SOLO UN PRODUCTO**
 
+> Creación de la base de datos y tablas 
+
+**Diagrama**
+
+![](img/diagrama.png)
 
 > Creación de la base de datos y tablas 
 
