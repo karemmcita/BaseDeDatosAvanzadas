@@ -124,7 +124,7 @@ BEGIN
 END; 
 GO
 
-EXEC usp_venta_registro 'Pedro Afonso', 'Tofu', 101;
+EXEC usp_venta_registro 'Pedro Afonso', 'Tofu', 10;
 
 SELECT * FROM producto;
 
